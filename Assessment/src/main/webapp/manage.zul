@@ -1,0 +1,6 @@
+<?page title="Manage" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Manage" border="normal">
+New Content Here!
+</window>
+</zk>

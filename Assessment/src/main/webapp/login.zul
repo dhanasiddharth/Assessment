@@ -1,0 +1,19 @@
+<?page title="Assessment | Login" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Login" border="normal" 
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm')@init('apps.assessment.vm.Login')">
+		<vbox>
+			<hbox>
+				User ID
+				<textbox value="@bind(vm.user)"></textbox>
+			</hbox>
+			<hbox>
+				Password
+				<textbox value="@bind(vm.password)" type="password"></textbox>
+			</hbox>
+			<label value="@bind(vm.message)"></label>
+			<button label="Login" onClick="@command('login')"></button>
+		</vbox>
+	</window>
+</zk>
