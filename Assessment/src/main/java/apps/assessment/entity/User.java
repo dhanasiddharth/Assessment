@@ -6,6 +6,7 @@ import java.util.Set;
 public class User {
 	private String id;
 	private String name;
+	private String password;
 	private Set<String> roles;
 	
 	public User(String userId, String name) {
@@ -32,6 +33,10 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public int getIdAsInt() {
+        return Integer.parseInt(id);
+    }
 
 	public void addRole(String role) {
 		if(roles == null) {
@@ -39,4 +44,12 @@ public class User {
 		}
 		roles.add(role);
 	}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -1,9 +1,11 @@
 package apps.assessment.service;
 
+import apps.assessment.entity.Team;
+
 public interface UserService {
 	boolean authenticate(String userId, String password);
 
-	boolean insertUser(String userId, String name);
+	boolean insertTeam(Team team);
 
 	/**
 	 * Doesn't validate whether a valid user is present.

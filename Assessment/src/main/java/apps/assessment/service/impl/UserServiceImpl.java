@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
 import apps.assessment.Constants;
+import apps.assessment.entity.Team;
 import apps.assessment.entity.User;
 import apps.assessment.service.UserService;
 
@@ -37,11 +38,6 @@ public class UserServiceImpl implements UserService{
 		return false;
 	}
 
-	public boolean insertUser(String userId, String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public String getUserName() {
 		if(Sessions.getCurrent().getAttribute(Constants.USER) != null) {
 			return ((User)Sessions.getCurrent().getAttribute(Constants.USER)).getName();
@@ -64,5 +60,10 @@ public class UserServiceImpl implements UserService{
 		}
 		return true;
 	}
+
+    public boolean insertTeam(Team team) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
 }
