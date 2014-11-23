@@ -3,14 +3,12 @@ package apps.assessment.entity;
 import java.util.List;
 
 public class Question {
-    @Override
-    public String toString() {
-        return "Question [id=" + id + ", text=" + text + ", options=" + options + ", score=" + score + "]";
-    }
     private int id;
     private String text;
     private List<Option> options;
     private Score score;
+    
+    private Option answer; 
     
     public int getId() {
         return id;
@@ -39,4 +37,16 @@ public class Question {
     public void setScore(Score score) {
         this.score = score;
     }
+    
+	public Option getAnswer() {
+		return answer;
+	}
+	public void setAnswer(Option answer) {
+		this.answer = answer;
+	}
+	@Override
+	public String toString() {
+		return "Question [id=" + id + ", text=" + text + ", options=" + options
+				+ ", score=" + score + ", answer=" + answer + "]";
+	}
 }

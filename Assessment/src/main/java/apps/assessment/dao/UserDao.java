@@ -1,4 +1,4 @@
-package apps.assessment.service.impl;
+package apps.assessment.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

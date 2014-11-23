@@ -1,4 +1,4 @@
-package apps.assessment.service.impl;
+package apps.assessment.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import apps.assessment.dao.entity.Exam;
 import apps.assessment.entity.Option;
 import apps.assessment.entity.Question;
 import apps.assessment.entity.Score;
@@ -73,5 +74,12 @@ public class QuestionDao {
                 });
         
         return false;
+    }
+    
+    public List<Exam> getExams(int userId) {
+    	return getJdbcTemplate().query(
+    			"SELECT * FROM exam JOIN user_exam ON exam.id = user_exam.user_id WHERE user_exam.user_id = ?", 
+    			new Object[]{userId},
+    			new BeanPropertyRowMapper<Exam>(Exam.class));
     }
 }

@@ -1,6 +1,7 @@
 package apps.assessment.service;
 
 import apps.assessment.entity.Team;
+import apps.assessment.entity.User;
 
 public interface UserService {
 	boolean authenticate(String userId, String password);
@@ -12,4 +13,6 @@ public interface UserService {
 	 * @return
 	 */
 	String getUserName();
+	
+	User getAuthenticatedUser();
 }

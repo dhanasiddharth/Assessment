@@ -2,7 +2,10 @@ package apps.assessment.vm;
 
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.web.Attributes;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.ClientInfoEvent;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 
@@ -34,6 +37,11 @@ public class Login {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	@Command
+	public void updateTimeZone(ClientInfoEvent event) {
+		Sessions.getCurrent().setAttribute(Attributes.PREFERRED_TIME_ZONE, event.getTimeZone());
 	}
 	
 	@Command

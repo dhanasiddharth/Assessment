@@ -2,22 +2,43 @@
 <zk>
 <window title="Assessment" border="normal" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('vm') @init('apps.assessment.vm.Assessment')">
-	<listbox model="@bind(vm.questions)" >
+	
+	<vbox visible="@load(not vm.showQuestions)">
+		Waring message
+		<button onClick="@command('start')">Start</button>
+	</vbox>
+
+	<timer delay="1000" repeats="true" onTimer="@command('changeTimeout')"></timer>
+	
+	<listbox model="@bind(vm.questions)" visible="@load(vm.showQuestions)">
+		<listhead>
+			<listheader>
+				Test
+				<label value="@bind(vm.formattedTimeout)"></label>
+			</listheader>
+		</listhead>
 		<template name="model" var="question">
 			<listitem >
 				<listcell>
 					<vbox>
 						<label value="@bind(question.text)"></label>
 						
-						<radiogroup children="@bind(question.options) @template('opt')">
+						<radiogroup children="@bind(question.options) @template('opt')"
+							selectedItem="@save(question.answer)">
 								<template name="opt">
-									<radio label="@bind(question.options[forEachStatus.index].text)"></radio>
+									<radio label="@bind(question.options[forEachStatus.index].text)"
+										value="@bind(question.options[forEachStatus.index])"></radio>
 								</template>
 						</radiogroup>
 					</vbox>
 				</listcell>
 			</listitem>
 		</template>
+		<listfoot>
+			<listfooter>
+				<button onClick="@command('complete')">Submit</button>
+			</listfooter>
+		</listfoot>
 	</listbox>
 </window>
 </zk>

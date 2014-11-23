@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
 import apps.assessment.Constants;
+import apps.assessment.dao.UserDao;
 import apps.assessment.entity.Team;
 import apps.assessment.entity.User;
 import apps.assessment.service.UserService;
@@ -39,8 +40,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public String getUserName() {
-		if(Sessions.getCurrent().getAttribute(Constants.USER) != null) {
-			return ((User)Sessions.getCurrent().getAttribute(Constants.USER)).getName();
+		User authnticatedUser = getAuthenticatedUser(); 
+		if(authnticatedUser != null) {
+			return authnticatedUser.getName();
 		}
 		return "";
 	}
@@ -50,6 +52,13 @@ public class UserServiceImpl implements UserService{
 			return true;
 		}
 		return false;
+	}
+	
+	public User getAuthenticatedUser() {
+		if(Sessions.getCurrent().getAttribute(Constants.USER) != null) {
+			return ((User)Sessions.getCurrent().getAttribute(Constants.USER));
+		}
+		return null;
 	}
 	
 	private boolean isInteger(String userId) {
@@ -65,5 +74,6 @@ public class UserServiceImpl implements UserService{
         // TODO Auto-generated method stub
         return false;
     }
+
 
 }
