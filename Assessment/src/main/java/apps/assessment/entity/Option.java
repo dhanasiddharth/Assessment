@@ -10,20 +10,27 @@ public class Option {
     public void setText(String text) {
         this.text = text;
     }
-    public boolean isCorrect() {
-        return isCorrect > 0;
+    public boolean getCorrect() {
+        return getIsCorrect() > 0;
     }
     public void setCorrect(boolean isCorrect) {
         if(isCorrect) {
-            this.isCorrect = 1;
+            this.setIsCorrect(1);
         } else {
-            this.isCorrect = 0;
+            this.setIsCorrect(0);
         }
     }
     
     @Override
     public String toString() {
-        return "Option [text=" + text + ", isCorrect=" + isCorrect + "]";
+        return "Option [text=" + text + ", isCorrect=" + getIsCorrect() + "]";
+    }
+    
+    public int getIsCorrect() {
+        return isCorrect;
+    }
+    public void setIsCorrect(int isCorrect) {
+        this.isCorrect = isCorrect;
     }
     
 }

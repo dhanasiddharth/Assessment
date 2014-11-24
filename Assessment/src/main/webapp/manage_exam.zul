@@ -1,3 +1,4 @@
+<?init class="apps.assessment.Authnticator"?>
 <panel title="Manage Exams" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('examManager') @init('apps.assessment.vm.ExamMnager')" collapsible="true">
 	<panelchildren>
@@ -19,10 +20,10 @@
 				</row>
 				<row>
 					Start Time 
-					<timebox value="@bind(examManager.exam.startTime)" hflex="1"></timebox>
+					<timebox value="@bind(examManager.exam.startTime)" width="150px"></timebox>
 				</row>
 				<row>
-					End Time <timebox value="@bind(examManager.exam.endTime)"></timebox>
+					End Time <timebox value="@bind(examManager.exam.endTime)" width="150px"></timebox>
 				</row>
 				<row>
 					Duration (Seconds) <decimalbox value="@bind(examManager.exam.timeLimit)"></decimalbox>

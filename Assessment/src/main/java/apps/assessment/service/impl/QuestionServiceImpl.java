@@ -46,9 +46,9 @@ public class QuestionServiceImpl implements QuestionService {
 		score.setQuestionId(question.getId());
 		score.setScore(exam.getSocrePerQuestion() * 
 				(question.getAnswer() == null ? 0: 
-					question.getAnswer().isCorrect() ? 1 : 
+					question.getAnswer().getCorrect() ? 1 : 
 						- exam.getNegativeScorePerQuestion()));
-
+		
 		return score;
 	}
 
@@ -80,5 +80,9 @@ public class QuestionServiceImpl implements QuestionService {
 	public boolean saveQuestion(Question question, int examId) {
 		return questionDao.saveQuestion(question, examId);
 	}
+
+    public boolean makeAttempt(int userId, int examId) {
+        return questionDao.makeAttempt(userId, examId);
+    }
 
 }

@@ -86,7 +86,12 @@
 			<artifactId>atlantic</artifactId>
 			<version>1.0.3</version>
 		</dependency>
-		
+		<dependency>
+		  <groupId>org.zkoss.addons</groupId>
+		  <artifactId>zk-bootstrap</artifactId>
+		  <version>1.0.0</version>
+		</dependency>
+
 		<!-- MySql Connector -->
 		<dependency>
 			<groupId>mysql</groupId>

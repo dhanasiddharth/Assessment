@@ -1,8 +1,9 @@
+<?init class="apps.assessment.Authnticator"?>
 <zk>
-	<window apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm')@init('apps.assessment.MyViewModel')"
-		validationMessages="@id('vmsgs')">
-		<hlayout>count: <label value="@load(vm.count)" /></hlayout>
-		<button label="add" onClick="@command('cmd')"/>
+	<window>
+		<vbox>
+			<button href="assessment.zul">Start assessment</button>
+			<button if="${sessionScope.user.hasRole('admin')}" href="manage.zul"> Manage </button>
+		</vbox>
 	</window>
 </zk>

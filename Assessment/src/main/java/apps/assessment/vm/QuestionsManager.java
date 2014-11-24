@@ -26,6 +26,8 @@ public class QuestionsManager {
 	private Question question;
 	private List<Option> options;
 	private Option option;
+	private boolean correctOption;
+	
 	
 	@WireVariable
 	private QuestionService questionService;
@@ -45,14 +47,21 @@ public class QuestionsManager {
 		setQuestions(questionService.getQuestions(getSelectedExam().getId()));
 	}
 	
-	@NotifyChange("options")
+	@NotifyChange({"options", "option", "correctOption"})
 	@Command
 	public void addOption(){
 		if(options == null) {
 			options = new ArrayList<Option>();
 		}
+		
+		if(correctOption) {
+		    option.setIsCorrect(1);
+		}
+		System.out.println("Adding otion" + option);
+		
 		getOptions().add(option);
 		option = new Option();
+		correctOption = false;
 	}
 	
 	@NotifyChange("questions")
@@ -106,4 +115,12 @@ public class QuestionsManager {
 	public void setOption(Option option) {
 		this.option = option;
 	}
+
+    public boolean getCorrectOption() {
+        return correctOption;
+    }
+
+    public void setCorrectOption(boolean correctOption) {
+        this.correctOption = correctOption;
+    }
 }

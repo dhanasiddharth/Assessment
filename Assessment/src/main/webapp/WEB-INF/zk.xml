@@ -11,9 +11,32 @@
 		<value>Cloudburst Assessment</value>
 	</preference>
 	
+	<!-- 
 	<library-property>
 	    <name>org.zkoss.theme.preferred</name>
 	    <value>atlantic</value>
+	</library-property>
+	 -->
+	 
+	 <library-property>
+		<name>org.zkoss.zul.Button.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.Menupopup.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zkmax.zul.Navbar.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.Paging.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.Panel.mold</name>
+		<value>bs</value>
 	</library-property>
 	
 </zk>

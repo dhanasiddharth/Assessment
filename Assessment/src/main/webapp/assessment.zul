@@ -1,14 +1,21 @@
+<?init class="apps.assessment.Authnticator"?>
 <?page title="Assessment" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window title="Assessment" border="normal" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('vm') @init('apps.assessment.vm.Assessment')">
+	
+	<style>
+		.question {
+			font-weight: 600;
+		}
+	</style>
 	
 	<vbox visible="@load(empty vm.selectedExam)">
 		No Exams available for you
 		<button>Ok</button>
 	</vbox>
 	
-	<vbox visible="@load(not empty vm.selectedExam and not vm.showQuestions)">
+	<vbox visible="@load(not empty vm.selectedExam and not vm.showQuestions and not vm.showScores)">
 		Waring message
 		<button onClick="@command('start')">Start</button>
 	</vbox>
@@ -16,22 +23,27 @@
 	<timer delay="1000" repeats="true" onTimer="@command('changeTimeout')"></timer>
 	
 	<listbox model="@bind(vm.questions)" visible="@load(vm.showQuestions)">
+		<auxhead>
+			<auxheader>
+				Time remaining: 
+				<label value="@bind(vm.formattedTimeout)"></label>
+			</auxheader>
+		</auxhead>
 		<listhead>
 			<listheader>
 				Test
-				<label value="@bind(vm.formattedTimeout)"></label>
 			</listheader>
 		</listhead>
 		<template name="model" var="question">
 			<listitem >
 				<listcell>
 					<vbox>
-						<label value="@bind(question.text)"></label>
+						<label value="@bind(question.text)" class="question"></label>
 						
 						<radiogroup children="@bind(question.options) @template('opt')"
 							selectedItem="@save(question.answer)">
 								<template name="opt">
-									<radio label="@bind(question.options[forEachStatus.index].text)"
+									<radio class="radio" label="@bind(question.options[forEachStatus.index].text)"
 										value="@bind(question.options[forEachStatus.index])"></radio>
 								</template>
 						</radiogroup>
@@ -45,5 +57,10 @@
 			</listfooter>
 		</listfoot>
 	</listbox>
+	
+	<vbox visible="@load(vm.showScores)">
+		Your score is 
+		<label value="@load(vm.score)"></label>
+	</vbox>
 </window>
 </zk>

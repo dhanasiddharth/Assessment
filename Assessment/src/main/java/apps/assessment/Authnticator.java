@@ -15,8 +15,13 @@ public class Authnticator implements Initiator {
 		User user = (User) Sessions.getCurrent().getAttribute(Constants.USER);
 		
 		if(user == null) {
-			Executions.sendRedirect("/login.zhtml");
+			Executions.sendRedirect("/login.zul");
 			return;
+		}
+		
+		String path = Executions.getCurrent().getDesktop().getRequestPath(); 
+		if(path.contains("manage") && !user.hasRole(Constants.ROLE_ADMIN)) {
+		    Executions.sendRedirect("/");
 		}
 	}
 

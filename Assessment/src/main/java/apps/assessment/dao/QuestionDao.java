@@ -87,7 +87,9 @@ public class QuestionDao {
     
     public List<Exam> getExams(int userId) {
     	return getJdbcTemplate().query(
-    			"SELECT * FROM exam JOIN user_exam ON exam.id = user_exam.user_id WHERE user_exam.user_id = ?", 
+    			"SELECT * FROM exam JOIN user_exam ON exam.id = user_exam.exam_id " +
+    			"RIGHT OUTER JOIN attempt ON exam.id = attempt.exam_id " + 
+    			"WHERE user_exam.user_id = ?", 
     			new Object[]{userId},
     			new BeanPropertyRowMapper<Exam>(Exam.class));
     }
@@ -125,6 +127,7 @@ public class QuestionDao {
 	public boolean saveQuestion(final Question question, int examId) {
 		Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put("question", question.getText());
+        parameters.put("exam_id", examId);
         
         final Number questionId = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
                         .withTableName("questions")
@@ -132,14 +135,14 @@ public class QuestionDao {
                         .executeAndReturnKey(parameters);
         
         getJdbcTemplate().batchUpdate(
-                "INSERT INTO options (question_id, option, is_correct) VALUES (?,?,?)", 
+                "INSERT INTO options (question_id, `option`, is_correct) VALUES (?,?,?)", 
                 new BatchPreparedStatementSetter() {
             
                     public void setValues(PreparedStatement statement, int i) throws SQLException {
                         Option option = question.getOptions().get(i);
                         statement.setInt(1, questionId.intValue());
                         statement.setString(2, option.getText());
-                        statement.setInt(3, option.isCorrect()? 1 : 0 );
+                        statement.setInt(3, option.getIsCorrect());
                     }
                     
                     public int getBatchSize() {
@@ -148,5 +151,12 @@ public class QuestionDao {
                 });
         			
 		return false;
+	}
+	
+	
+	public boolean makeAttempt(int userId, int examId) {
+	    getJdbcTemplate().update("INSERT INTO `exam`.`attempt` (`user_id`, `exam_id`, `time`) VALUES (?, ?, now())", 
+                new Object[]{userId, examId});
+	    return false;
 	}
 }

@@ -1,10 +1,11 @@
+<?init class="apps.assessment.Authnticator"?>
 <panel title="Questions" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('questionsManager') @init('apps.assessment.vm.QuestionsManager')" collapsible="true">
 	<panelchildren>
 		<vbox>
 			<hbox>
 				Exam
-				<combobox onSelect="@command('selectExam')" model="@bind(questionsManager.exams)">
+				<combobox onSelect="@command('selectExam')" model="@bind(questionsManager.exams) @template('examModel')" >
 					<template name="examModel" var="exam">
 						<comboitem label="@load(exam.name)" value="@bind(exam)"></comboitem>
 					</template>
@@ -26,6 +27,7 @@
 								<radiogroup children="@bind(question.options) @template('opt')">
 										<template name="opt">
 											<radio label="@bind(question.options[forEachStatus.index].text)"
+												disabled="true"
 												selected="@bind(question.options[forEachStatus.index].correct)"></radio>
 										</template>
 								</radiogroup>
@@ -40,22 +42,20 @@
 							<textbox hflex="1" value="@bind(questionsManager.question.text)"></textbox>
 							
 							Options
-							<listbox model="@bind(questionsManager.options)" >
+							<listbox model="@bind(questionsManager.options) @template('optionsModel')" >
 								<template name="optionsModel" var="option">
 									<listitem>
 										<listcell>
-											<hbox>
-												<label value="@bind(option.text)"></label>
-												<checkbox value="@load(option.correct)" disabled="true"></checkbox>
-											</hbox>
+											<label value="@bind(option.text)"></label>
+											<checkbox checked="@bind(option.correct)" disabled="true"></checkbox>
 										</listcell>
 									</listitem>
 								</template>
 								<listfoot>
 									<listfooter>
 										<textbox value="@bind(questionsManager.option.text)"></textbox>
-										<checkbox value="@bind(questionsManager.option.correct)"></checkbox>
-										<button onClick="@command('addOption')">Add</button>
+										<checkbox checked="@bind(questionsManager.option.correct)" label="is Correct"> </checkbox>
+										<button onClick="@command('addOption')" class="btn-xs btn-primary">Add Option</button>
 									</listfooter>
 								</listfoot>
 							</listbox>	

@@ -23,6 +23,9 @@ public class Assessment {
     private boolean showQuestions;
     private Duration timeout;
     private String formattedTimeout;
+    
+    private float score;
+    private boolean showScores;
         
     @WireVariable
     private QuestionService questionService;
@@ -41,6 +44,7 @@ public class Assessment {
 				break;
 			}
 		}
+        
     }
  
     @NotifyChange({"showQuestions","questions"})
@@ -48,13 +52,23 @@ public class Assessment {
     public void start() {
     	setQuestions(questionService.getQuestions(getSelectedExam().getId()));
     	setShowQuestions(true);
+    	
+    	questionService.makeAttempt(userService.getAuthenticatedUser().getIdAsInt(), 
+    	        selectedExam.getId());
     	setTimeout(getSelectedExam().getDuration());
     }
     
+    @NotifyChange({"score","showScores", "showQuestions"})
     @Command
     public void complete() {
     	questionService.computeScores(getSelectedExam(), questions);
+    	
+    	for (Question question : questions) {
+            score += question.getScore().getScore();
+        }
     	questionService.insertScore(questions);
+    	showScores = true;
+    	showQuestions = false;
     }
     
     @NotifyChange("formattedTimeout")
@@ -118,4 +132,20 @@ public class Assessment {
 	public void setSelectedExam(Exam selectedExam) {
 		this.selectedExam = selectedExam;
 	}
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
+
+    public boolean isShowScores() {
+        return showScores;
+    }
+
+    public void setShowScores(boolean showScores) {
+        this.showScores = showScores;
+    }
 }

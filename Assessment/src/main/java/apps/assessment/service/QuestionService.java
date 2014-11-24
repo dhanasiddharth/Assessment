@@ -19,4 +19,6 @@ public interface QuestionService {
 	boolean saveQuestion(Question question, int examId);
 
 	List<Exam> getExams();
+	
+	boolean makeAttempt(int userId, int examId);
 }
