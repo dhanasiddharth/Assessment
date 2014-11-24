@@ -2,7 +2,9 @@ package apps.assessment.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import apps.assessment.dao.entity.Exam;
@@ -76,10 +79,74 @@ public class QuestionDao {
         return false;
     }
     
+    public List<Exam> getExams() {
+    	return getJdbcTemplate().query(
+    			"SELECT * FROM exam",
+    			new BeanPropertyRowMapper<Exam>(Exam.class));
+    }
+    
     public List<Exam> getExams(int userId) {
     	return getJdbcTemplate().query(
     			"SELECT * FROM exam JOIN user_exam ON exam.id = user_exam.user_id WHERE user_exam.user_id = ?", 
     			new Object[]{userId},
     			new BeanPropertyRowMapper<Exam>(Exam.class));
     }
+
+	public int saveExam(apps.assessment.dao.entity.Exam exam) {
+	    Map<String, Object> parameters = new HashMap<String, Object>(1);
+        parameters.put("name", exam.getName());
+        parameters.put("date", exam.getDate());
+        parameters.put("start_time", exam.getStartTime());
+        parameters.put("end_time", exam.getEndTime());
+        parameters.put("time_limit", exam.getTimeLimit());
+        parameters.put("no_of_questions", exam.getNumberOfQuestions());
+        parameters.put("score_per_question", exam.getScorePerQuestion());
+        parameters.put("neg_score_per_question", exam.getNegativeScorePerQuestion());
+        
+        final Number examId = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                        .withTableName("exam")
+                        .usingGeneratedKeyColumns("id")
+                        .executeAndReturnKey(parameters);
+        
+		return examId.intValue();
+	}
+	
+	/**
+	 * TODO: Make this dynamic
+	 * @return
+	 */
+	public boolean insertUserExams(int examId) {
+		getJdbcTemplate().update("INSERT INTO user_exam (user_id, exam_id) SELECT id, ? FROM users", 
+				new Object[]{examId});
+		
+		return false;
+	}
+
+	public boolean saveQuestion(final Question question, int examId) {
+		Map<String, Object> parameters = new HashMap<String, Object>(1);
+        parameters.put("question", question.getText());
+        
+        final Number questionId = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                        .withTableName("questions")
+                        .usingGeneratedKeyColumns("id")
+                        .executeAndReturnKey(parameters);
+        
+        getJdbcTemplate().batchUpdate(
+                "INSERT INTO options (question_id, option, is_correct) VALUES (?,?,?)", 
+                new BatchPreparedStatementSetter() {
+            
+                    public void setValues(PreparedStatement statement, int i) throws SQLException {
+                        Option option = question.getOptions().get(i);
+                        statement.setInt(1, questionId.intValue());
+                        statement.setString(2, option.getText());
+                        statement.setInt(3, option.isCorrect()? 1 : 0 );
+                    }
+                    
+                    public int getBatchSize() {
+                        return question.getOptions().size();
+                    }
+                });
+        			
+		return false;
+	}
 }

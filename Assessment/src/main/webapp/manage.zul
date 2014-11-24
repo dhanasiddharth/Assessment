@@ -1,6 +1,37 @@
 <?page title="Manage" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="Manage" border="normal">
-New Content Here!
+<window title="Manage" border="normal" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('userManager') @init('apps.assessment.vm.UserManager')">
+	<grid model="@bind(userManager.users)">
+		<auxhead>
+			<auxheader>
+				Team name:
+				<textbox value="@bind(userManager.teamName)"></textbox>
+			</auxheader>
+		</auxhead>
+		<columns>
+			<column></column>
+			<column></column>
+		</columns>
+		<rows>
+			<template name="model" var="user">
+				<row>
+					<label value="@bind(user.id)"></label>
+					<label value="@bind(user.name)"></label>
+				</row>
+			</template>
+		</rows>
+		<foot>
+			<footer span="2">
+				Id: <textbox value="@bind(userManager.userId)"></textbox>
+				Name: <textbox value="@bind(userManager.userName)"></textbox>
+				Password: <textbox value="@bind(userManager.password)"></textbox>
+				<button onClick="@command('addUser')">Add Member</button>
+			</footer>
+		</foot>
+	</grid>
+	<button onClick="@command('saveTeam')">Save Team</button>
 </window>
+<include src="manage_exam.zul"></include>
+<include src="manage_questions.zul"></include>
 </zk>

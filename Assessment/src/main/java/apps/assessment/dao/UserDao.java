@@ -53,7 +53,7 @@ public class UserDao {
 	    Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put("name", team.getName());
         
-        Number tableId = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+        final Number tableId = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
                         .withTableName("team")
                         .usingGeneratedKeyColumns("id")
                         .executeAndReturnKey(parameters);
@@ -61,19 +61,21 @@ public class UserDao {
         team.setId(tableId.intValue());
 	    
         //Inserting Users
-        getJdbcTemplate().batchUpdate("INSERT INTO users (id, name, password) VALUES (?,?,?)", new BatchPreparedStatementSetter() {
+        getJdbcTemplate().batchUpdate("INSERT INTO users (id, name, password, team_id) VALUES (?,?,?, ?)", 
+        		new BatchPreparedStatementSetter() {
             
-            public void setValues(PreparedStatement statement, int i) throws SQLException {
-                User user = team.getUsers().get(i);
-                statement.setInt(1, user.getIdAsInt());
-                statement.setString(2, user.getName());
-                statement.setString(3, user.getPassword());
-            }
-            
-            public int getBatchSize() {
-                return team.getUsers().size();
-            }
-        });
+		            public void setValues(PreparedStatement statement, int i) throws SQLException {
+		                User user = team.getUsers().get(i);
+		                statement.setInt(1, user.getIdAsInt());
+		                statement.setString(2, user.getName());
+		                statement.setString(3, user.getPassword());
+		                statement.setInt(4, tableId.intValue());
+		            }
+		            
+		            public int getBatchSize() {
+		                return team.getUsers().size();
+		            }
+		        });
         
 	    return true;
     }

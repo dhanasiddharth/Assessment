@@ -13,7 +13,7 @@ public class User {
 		setId(userId);
 		setName(name);
 	}
-	
+
 	public boolean hasRole(String role) {
 		if(roles != null) {
 			return roles.contains(role);

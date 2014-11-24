@@ -38,7 +38,7 @@ public class Exam {
 		this.setDuration(Duration.ofSeconds(exam.getTimeLimit()));
 		
 		this.setNumberOfQuestions(exam.getNumberOfQuestions());
-		this.setSocrePerQuestion(exam.getSocrePerQuestion());
+		this.setSocrePerQuestion(exam.getScorePerQuestion());
 		this.setNegativeScorePerQuestion(exam.getNegativeScorePerQuestion());
 	}
     

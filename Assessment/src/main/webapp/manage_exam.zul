@@ -1,0 +1,47 @@
+<panel title="Manage Exams" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('examManager') @init('apps.assessment.vm.ExamMnager')" collapsible="true">
+	<panelchildren>
+		<grid>
+			<auxhead>
+				<auxheader>Create Exam</auxheader>
+			</auxhead>
+			<columns>
+				<column width="250px"></column>
+				<column ></column>
+			</columns>
+			<rows>
+				<row>
+					Exam Title <textbox value="@bind(examManager.exam.name)"></textbox>
+				</row>
+				<row>
+					Date 
+					<datebox value="@bind(examManager.exam.date)"></datebox>
+				</row>
+				<row>
+					Start Time 
+					<timebox value="@bind(examManager.exam.startTime)" hflex="1"></timebox>
+				</row>
+				<row>
+					End Time <timebox value="@bind(examManager.exam.endTime)"></timebox>
+				</row>
+				<row>
+					Duration (Seconds) <decimalbox value="@bind(examManager.exam.timeLimit)"></decimalbox>
+				</row>
+				<row>
+					Number of questions <decimalbox value="@bind(examManager.exam.numberOfQuestions)"></decimalbox>
+				</row>
+				<row>
+					Score per question <decimalbox value="@bind(examManager.exam.scorePerQuestion)"></decimalbox>
+				</row>
+				<row>
+					Negative score per question <decimalbox value="@bind(examManager.exam.negativeScorePerQuestion)"></decimalbox>
+				</row>
+			</rows>
+			<foot>
+				<footer>
+					<button onClick="@command('saveExam')">Save Exam</button>
+				</footer>
+			</foot>
+		</grid>
+	</panelchildren>
+</panel>

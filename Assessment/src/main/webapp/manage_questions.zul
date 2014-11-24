@@ -1,0 +1,70 @@
+<panel title="Questions" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('questionsManager') @init('apps.assessment.vm.QuestionsManager')" collapsible="true">
+	<panelchildren>
+		<vbox>
+			<hbox>
+				Exam
+				<combobox onSelect="@command('selectExam')" model="@bind(questionsManager.exams)">
+					<template name="examModel" var="exam">
+						<comboitem label="@load(exam.name)" value="@bind(exam)"></comboitem>
+					</template>
+				</combobox>
+			</hbox>
+			
+			<listbox model="@bind(questionsManager.questions)">
+				<listhead>
+					<listheader>
+						Questions
+					</listheader>
+				</listhead>
+				<template name="model" var="question">
+					<listitem >
+						<listcell>
+							<vbox>
+								<label value="@bind(question.text)"></label>
+								
+								<radiogroup children="@bind(question.options) @template('opt')">
+										<template name="opt">
+											<radio label="@bind(question.options[forEachStatus.index].text)"
+												selected="@bind(question.options[forEachStatus.index].correct)"></radio>
+										</template>
+								</radiogroup>
+							</vbox>
+						</listcell>
+					</listitem>
+				</template>
+				<listfoot>
+					<listfooter>
+						<vbox>
+							Question
+							<textbox hflex="1" value="@bind(questionsManager.question.text)"></textbox>
+							
+							Options
+							<listbox model="@bind(questionsManager.options)" >
+								<template name="optionsModel" var="option">
+									<listitem>
+										<listcell>
+											<hbox>
+												<label value="@bind(option.text)"></label>
+												<checkbox value="@load(option.correct)" disabled="true"></checkbox>
+											</hbox>
+										</listcell>
+									</listitem>
+								</template>
+								<listfoot>
+									<listfooter>
+										<textbox value="@bind(questionsManager.option.text)"></textbox>
+										<checkbox value="@bind(questionsManager.option.correct)"></checkbox>
+										<button onClick="@command('addOption')">Add</button>
+									</listfooter>
+								</listfoot>
+							</listbox>	
+							
+							<button onClick="@command('saveQuestion')">Save Question</button>						
+						</vbox>
+					</listfooter>
+				</listfoot>
+			</listbox>
+		</vbox>
+	</panelchildren>
+</panel>

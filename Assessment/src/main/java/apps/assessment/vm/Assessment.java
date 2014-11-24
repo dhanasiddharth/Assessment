@@ -1,6 +1,7 @@
 package apps.assessment.vm;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.zkoss.bind.annotation.Command;
@@ -9,11 +10,15 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 
+import apps.assessment.entity.Exam;
 import apps.assessment.entity.Question;
 import apps.assessment.service.QuestionService;
+import apps.assessment.service.UserService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class Assessment {
+	private List<Exam> exams;
+	private Exam selectedExam;
     private List<Question> questions;
     private boolean showQuestions;
     private Duration timeout;
@@ -22,22 +27,33 @@ public class Assessment {
     @WireVariable
     private QuestionService questionService;
     
+    @WireVariable
+    private UserService userService;
+    
     @Init
     public void init() {
-        System.out.println(questionService.getExams());
+        setExams(questionService.getExams(userService.getAuthenticatedUser().getIdAsInt()));
+        
+        for (Exam exam : getExams()) {
+			if (exam.getStartTime().isBefore(LocalDateTime.now()) 
+					&& exam.getEndTime().isAfter(LocalDateTime.now())) {
+				setSelectedExam(exam);
+				break;
+			}
+		}
     }
  
     @NotifyChange({"showQuestions","questions"})
     @Command
     public void start() {
-    	setQuestions(questionService.getQuestions(1));
+    	setQuestions(questionService.getQuestions(getSelectedExam().getId()));
     	setShowQuestions(true);
-    	setTimeout(Duration.ofMinutes(10));
+    	setTimeout(getSelectedExam().getDuration());
     }
     
     @Command
     public void complete() {
-    	questionService.computeScores(null, questions);
+    	questionService.computeScores(getSelectedExam(), questions);
     	questionService.insertScore(questions);
     }
     
@@ -85,5 +101,21 @@ public class Assessment {
 
 	public void setFormattedTimeout(String formattedTimeout) {
 		this.formattedTimeout = formattedTimeout;
+	}
+
+	public List<Exam> getExams() {
+		return exams;
+	}
+
+	public void setExams(List<Exam> exams) {
+		this.exams = exams;
+	}
+
+	public Exam getSelectedExam() {
+		return selectedExam;
+	}
+
+	public void setSelectedExam(Exam selectedExam) {
+		this.selectedExam = selectedExam;
 	}
 }

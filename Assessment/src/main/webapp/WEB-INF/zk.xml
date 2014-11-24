@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <zk>
+    <library-property>
+	    <name>org.zkoss.web.preferred.timeZone</name>
+	    <value>GMT+530</value>
+	</library-property>
+
 	<preference>
 		<name>org.zkoss.zk.ui.WebApp.name</name>
 		<value>Cloudburst Assessment</value>

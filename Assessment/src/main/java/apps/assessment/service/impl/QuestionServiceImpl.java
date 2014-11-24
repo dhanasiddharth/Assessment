@@ -53,9 +53,15 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	public List<Exam> getExams() {
-		List<apps.assessment.dao.entity.Exam> exams = 
-				questionDao.getExams(userService.getAuthenticatedUser().getIdAsInt()); 
+		return covertToUIExams(questionDao.getExams());
+	}
+	
+	public List<Exam> getExams(int userId) {
+		return covertToUIExams(questionDao.getExams(userId)); 
 		
+	}
+	
+	private List<Exam> covertToUIExams(List<apps.assessment.dao.entity.Exam> exams){
 		List<Exam> uiExams = new ArrayList<Exam>();
 		
 		for (apps.assessment.dao.entity.Exam exam : exams) {
@@ -63,6 +69,16 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 		
 		return uiExams;
+	}
+
+	public int saveExam(apps.assessment.dao.entity.Exam exam) {
+		int id = questionDao.saveExam(exam);
+		questionDao.insertUserExams(id);
+		return id;
+	}
+
+	public boolean saveQuestion(Question question, int examId) {
+		return questionDao.saveQuestion(question, examId);
 	}
 
 }

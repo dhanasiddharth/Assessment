@@ -3,7 +3,12 @@
 <window title="Assessment" border="normal" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('vm') @init('apps.assessment.vm.Assessment')">
 	
-	<vbox visible="@load(not vm.showQuestions)">
+	<vbox visible="@load(empty vm.selectedExam)">
+		No Exams available for you
+		<button>Ok</button>
+	</vbox>
+	
+	<vbox visible="@load(not empty vm.selectedExam and not vm.showQuestions)">
 		Waring message
 		<button onClick="@command('start')">Start</button>
 	</vbox>

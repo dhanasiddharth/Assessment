@@ -1,6 +1,10 @@
 package apps.assessment.vm;
 
+import java.util.TimeZone;
+
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.web.Attributes;
 import org.zkoss.zk.ui.Executions;
@@ -40,8 +44,8 @@ public class Login {
 	}
 	
 	@Command
-	public void updateTimeZone(ClientInfoEvent event) {
-		Sessions.getCurrent().setAttribute(Attributes.PREFERRED_TIME_ZONE, event.getTimeZone());
+	public void updateTimeZone(@ContextParam(ContextType.TRIGGER_EVENT) ClientInfoEvent event) {
+		Sessions.getCurrent().setAttribute(Attributes.PREFERRED_TIME_ZONE, TimeZone.getTimeZone("GMT"));
 	}
 	
 	@Command

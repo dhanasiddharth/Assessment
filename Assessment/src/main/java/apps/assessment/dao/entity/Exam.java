@@ -11,7 +11,7 @@ public class Exam {
     private Time endTime;
     private long timeLimit;
     private int numberOfQuestions;
-    private float socrePerQuestion;
+    private float scorePerQuestion;
     private float negativeScorePerQuestion;
     
 	public int getId() {
@@ -56,11 +56,11 @@ public class Exam {
 	public void setNumberOfQuestions(int numberOfQuestions) {
 		this.numberOfQuestions = numberOfQuestions;
 	}
-	public float getSocrePerQuestion() {
-		return socrePerQuestion;
+	public float getScorePerQuestion() {
+		return scorePerQuestion;
 	}
-	public void setSocrePerQuestion(float socrePerQuestion) {
-		this.socrePerQuestion = socrePerQuestion;
+	public void setScorePerQuestion(float socrePerQuestion) {
+		this.scorePerQuestion = socrePerQuestion;
 	}
 	public float getNegativeScorePerQuestion() {
 		return negativeScorePerQuestion;

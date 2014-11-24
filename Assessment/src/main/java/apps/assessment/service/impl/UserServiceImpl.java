@@ -71,8 +71,7 @@ public class UserServiceImpl implements UserService{
 	}
 
     public boolean insertTeam(Team team) {
-        // TODO Auto-generated method stub
-        return false;
+        return userDao.insertTeam(team);
     }
 
 
