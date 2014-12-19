@@ -16,7 +16,7 @@
 	</vbox>
 	
 	<vbox visible="@load(not empty vm.selectedExam and not vm.showQuestions and not vm.showScores)">
-		Waring message
+		You have only one attempt.
 		<button onClick="@command('start')">Start</button>
 	</vbox>
 

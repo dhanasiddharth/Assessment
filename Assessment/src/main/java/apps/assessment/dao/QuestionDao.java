@@ -88,7 +88,7 @@ public class QuestionDao {
     public List<Exam> getExams(int userId) {
     	return getJdbcTemplate().query(
     			"SELECT * FROM exam JOIN user_exam ON exam.id = user_exam.exam_id " +
-    			"RIGHT OUTER JOIN attempt ON exam.id = attempt.exam_id " + 
+    			"LEFT OUTER JOIN attempt ON exam.id = attempt.exam_id " + 
     			"WHERE user_exam.user_id = ?", 
     			new Object[]{userId},
     			new BeanPropertyRowMapper<Exam>(Exam.class));

@@ -64,7 +64,7 @@ public class QuestionsManager {
 		correctOption = false;
 	}
 	
-	@NotifyChange("questions")
+	@NotifyChange({"questions","question", "options", "option"})
 	@Command
 	public void saveQuestion(){
 		question.setOptions(getOptions());
@@ -74,6 +74,9 @@ public class QuestionsManager {
 			questions = new ArrayList<Question>();
 		}
 		questions.add(question);
+		
+		options = new ArrayList<Option>();
+		option = new Option();
 		question = new Question();
 	}
 	
